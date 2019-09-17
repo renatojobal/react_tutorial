@@ -1,43 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
-// class Square extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     value: null,
-  //   }
-  // }
-
-
-//   render() {
-//     return (
-//       <button 
-//       className="square" 
-//       onClick={() => {this.props.onCLick() }}
-//       >
-//         {this.props.value}
-//       </button>
-//     );
-//   }
-// }
-
-// Remplazo la calse Square por un compenete de funcion
-function Square(props){
-    return (
-      <button 
-      className="square" 
-      onClick={props.onCLick}
-      >
-        {props.value}
-      </button>
-    );
-
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
 }
 
 class Board extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
@@ -46,45 +19,23 @@ class Board extends React.Component {
   }
 
   handleClick(i) {
-    // const squares = this.state['squares'].slice();
     const squares = this.state.squares.slice();
-    // if(this.state.xIsNext){
-    //   squares[i] = 'X';
-    //   this.setState({
-    //     squares: squares,
-    //     xIsNext: false,
-    //   });             MI MANERA DE RESOLVERLO
-    // }else {
-    //   squares[i] = 'O';
-    //   this.setState({
-    //     squares: squares,
-    //     xIsNext: true,
-    //   });
-    // }
-
-
-    // Segun el tutorial
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-
-    //No hacer nada si es que ya hay ganador o si es que el cuadrado ya ha sido cliqueado
-    if (calculateWinner(squares) || squares[i]) { 
+    if (calculateWinner(squares) || squares[i]) {
       return;
     }
-
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       squares: squares,
       xIsNext: !this.state.xIsNext,
     });
-
-
   }
 
   renderSquare(i) {
     return (
-    <Square 
-      value={this.state.squares[i]} 
-      onCLick={() => this.handleClick(i)}
-    />
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
     );
   }
 
@@ -96,7 +47,6 @@ class Board extends React.Component {
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
-
 
     return (
       <div>
@@ -137,6 +87,13 @@ class Game extends React.Component {
   }
 }
 
+// ========================================
+
+ReactDOM.render(
+  <Game />,
+  document.getElementById('root')
+);
+
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -156,13 +113,3 @@ function calculateWinner(squares) {
   }
   return null;
 }
-
-
-// =======================================
-
-ReactDOM.render(
-  <Game />,
-  document.getElementById('root')
-);
-
-
