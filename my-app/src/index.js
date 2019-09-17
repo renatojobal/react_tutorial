@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 // class Square extends React.Component {
-//   // constructor(props) {
-//   //   super(props);
-//   //   this.state = {
-//   //     value: null,
-//   //   }
-//   // }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     value: null,
+  //   }
+  // }
 
 
 //   render() {
@@ -23,7 +23,7 @@ import './index.css';
 //   }
 // }
 
-// REmplazo la calse Square por un compenete de funcion
+// Remplazo la calse Square por un compenete de funcion
 function Square(props){
     return (
       <button 
@@ -65,6 +65,12 @@ class Board extends React.Component {
 
     // Segun el tutorial
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+
+    //No hacer nada si es que ya hay ganador o si es que el cuadrado ya ha sido cliqueado
+    if (calculateWinner(squares) || squares[i]) { 
+      return;
+    }
+
     this.setState({
       squares: squares,
       xIsNext: !this.state.xIsNext,
@@ -83,7 +89,14 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: '+ (this.state.xIsNext ? 'X' : 'O');
+    const winner = calculateWinner(this.state.squares);
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
+
 
     return (
       <div>
@@ -124,6 +137,25 @@ class Game extends React.Component {
   }
 }
 
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
 
 
 // =======================================
