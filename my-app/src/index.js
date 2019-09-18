@@ -59,7 +59,7 @@ class Game extends React.Component {
             ],
             stepNumber: 0,
             xIsNext: true,
-            isAsc: true,
+            isAsc: false,
         };
     }
 
@@ -108,6 +108,9 @@ class Game extends React.Component {
             );
         });
 
+        const movesOrder = this.state.isAsc ? 
+            moves.reverse() : moves
+
         let status;
         if (winner) {
             status = "Winner: " + winner;
@@ -126,12 +129,12 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <ol>{moves}</ol>
+                    <ol>{movesOrder}</ol>
                 </div>
 
                 <Switch onClick={(isActive) => {
                     this.setState({
-                        isAsc: !isActive
+                        isAsc: isActive
                     })
                 }} />
             </div>
@@ -140,11 +143,12 @@ class Game extends React.Component {
 }
 
 class Switch extends React.Component {
+
     state = {
         isActive: false,
     }
 
-    handleClick() {
+    handleClick = () => {
         this.setState((prevState) => {
             return {
                 isActive: !prevState.isActive,
@@ -156,7 +160,7 @@ class Switch extends React.Component {
 
     render() {
         return (
-            <button onClick={() => this.handleClick()}>{this.state.isActive ? 'activo' : 'inactivo'}</button>
+            <button onClick={this.handleClick}>{this.state.isActive ? 'activo' : 'inactivo'}</button>
         )
     }
 }
