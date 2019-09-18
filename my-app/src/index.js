@@ -26,13 +26,12 @@ class Board extends React.Component {
         let count = 0;
 
         for (let i = 0; i < 3; i++) {
-            
+
             items.push(
                 <div key={i} className="board-row">
                     {this.renderSquare(i + count)}
                     {this.renderSquare(i + count + 1)}
                     {this.renderSquare(i + count + 2)}
-
                 </div>
             )
 
@@ -59,7 +58,8 @@ class Game extends React.Component {
                 }
             ],
             stepNumber: 0,
-            xIsNext: true
+            xIsNext: true,
+            isAsc: true,
         };
     }
 
@@ -88,6 +88,8 @@ class Game extends React.Component {
             xIsNext: (step % 2) === 0
         });
     }
+
+
 
     render() {
         const history = this.state.history;
@@ -120,15 +122,46 @@ class Game extends React.Component {
                         squares={current.squares}
                         onClick={i => this.handleClick(i)}
                     />
+                    <p>Orden: {this.state.isAsc ? 'Ascendente' : 'Descendente'}</p>
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
                     <ol>{moves}</ol>
                 </div>
+
+                <Switch onClick={(isActive) => {
+                    this.setState({
+                        isAsc: !isActive
+                    })
+                }} />
             </div>
         );
     }
 }
+
+class Switch extends React.Component {
+    state = {
+        isActive: false,
+    }
+
+    handleClick() {
+        this.setState((prevState) => {
+            return {
+                isActive: !prevState.isActive,
+            }
+        }, () => {
+            if (this.props.onClick) this.props.onClick(this.state.isActive)
+        })
+    }
+
+    render() {
+        return (
+            <button onClick={() => this.handleClick()}>{this.state.isActive ? 'activo' : 'inactivo'}</button>
+        )
+    }
+}
+
+
 
 // ========================================
 
