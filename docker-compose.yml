@@ -1,0 +1,8 @@
+version: '3'
+services:
+  web:
+    build: .
+    image: react_tutorial
+    container_name: react_tutorial
+    volumes:
+      - .:/app
